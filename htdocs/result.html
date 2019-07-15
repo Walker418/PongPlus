@@ -12,6 +12,14 @@
     #myright, #mywrong{
       display: none;
     }
+    #btnTitle {
+      position: absolute;
+      top: 200px;
+      left: 320px;
+      width: 200px;
+      height: 100px;
+      cursor: pointer;
+    }
     dt{
       font-weight: bold;
     }
@@ -29,10 +37,8 @@
 <h3>他のプレイヤーの結果</h3>
 <dl id="member">
 </dl>
+<img id="btnTitle" align="center" src="assets/image/BtnBackToTitle.png">
 
-<p>
-  <a href="/">タイトル画面へ戻る</a>
-</p>
 </div>
 <script src="js/util.js"></script>
 <script>
@@ -69,6 +75,13 @@ window.onload = ()=>{
     document.querySelector("#member").innerHTML = html;
   });
 }
+
+// タイトル画面に移行
+document.querySelector("#btnTitle").addEventListener("click", ()=>{
+
+  location.href = "/";
+});
+
 </script>
 </body>
 </html>
