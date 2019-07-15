@@ -12,14 +12,6 @@
     #myright, #mywrong{
       display: none;
     }
-    #btnTitle {
-      position: absolute;
-      top: 200px;
-      left: 320px;
-      width: 200px;
-      height: 100px;
-      cursor: pointer;
-    }
     dt{
       font-weight: bold;
     }
@@ -38,12 +30,12 @@
 <dl id="member">
 </dl>
 
-<img id="btnTitle" align="center" src="assets/image/BtnBackToTitle.png">
-
+<p>
+  <a href="/">タイトル画面へ戻る</a>
+</p>
 </div>
 <script src="js/util.js"></script>
 <script>
-//データをロード
 window.onload = ()=>{
   const uid = localStorage.getItem('uid');
   const battle_id = localStorage.getItem('battle_id');
@@ -77,10 +69,6 @@ window.onload = ()=>{
     document.querySelector("#member").innerHTML = html;
   });
 }
-// タイトル画面に戻る
-document.querySelector("#btnTitle").addEventListener("click", ()=>{
-  location.href = "/";
-});
 </script>
 </body>
 </html>
