@@ -32,7 +32,7 @@ app.get("/battle", (req, res)=>{
 app.get("/result", (req, res)=>{
 	res.sendFile(DOCUMENT_ROOT + "result.html");	// リザルト画面
 });
-app.get("/assets/image/:file", (req, res)=>{				// 画像ファイル
+app.get("/assets/image/:file", (req, res)=>{		// 画像ファイル
 	res.sendFile(DOCUMENT_ROOT + "/assets/image/" + req.params.file);
  });
 http.listen(port, ()=>{

@@ -24,8 +24,8 @@
 				background-color: rgba(255,255,255, 0.8);
 			}
 			#btnBack {
-				position: relative;
-				top: 340px;
+				position: absolute;
+				top: 520px;
 				left: 20px;
 				width: 150px;
 				height: 75px;
@@ -40,12 +40,29 @@
 				<p>
 					<input type="text" name="uname" id="uname">
 					<button type="button" id="btnJoin">参加</button>
+					<div id="nowloading" style="display:none">
+						Now Loading...
+					</div>
 				</p>
 			</form>
 			<img id="btnBack" src="assets/image/btnBack.png">
 		</div>
 	</body>
 	<script>
+		// マッチング開始
+		document.querySelector("#btnJoin").addEventListener("click", function(){
+			let uname = document.querySelector("#uname");
+			
+			// ニックネームを入力されていない場合、メッセージを表示
+			if (uname.value === "") {
+				alert("ニックネームを入力してください");
+				uname.style.backgroundColor = "lightpink";
+				uname.focus();
+				return(false);
+			}
+			
+			// ユーザー登録
+			
 		// タイトル画面に戻る
 		document.querySelector("#btnBack").addEventListener("click", ()=>{
 				location.href = "/";
