@@ -34,7 +34,11 @@
 			<img id="btnStart" src="assets/image/btnStart.png">
 		</div>
 		<script>
-			
+			// タイトルBGMを再生
+			// マッチング画面に移行
+			document.querySelector("#btnStart").addEventListener("click", ()=>{
+				location.href = "/matching";
+			});
 		</script>
 	</body>
 </html>

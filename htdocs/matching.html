@@ -1,18 +1,54 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-<head>
-	<meta charset="utf8">
-	<title>Pong Plus</title>
-	<style>
-		
-	</style>
-</head>
-<body>
-	<div id="entry">
-		<h1>名前を入力してください：</h1>
-		<form id="entry-name">
+	<head>
+		<meta charset="utf8">
+		<title>マッチング | Pong Plus</title>
+		<style type="text/css">
+			#window {
+				background-image: url(assets/image/bg-matching.jpg);
+				width: 800px;
+				height: 600px;
+			}
+			#frmJoin {
+				position: relative;
+				top: 200px;
 			
-		</form>
-	</div>
-</body>
+				margin: 0 auto;
+				width: 400px;
+				
+				padding: 1em;
+				border: 1px solid #CCC;
+				border-radius: 1em;
+				text-align: center;
+				
+				background-color: rgba(255,255,255, 0.8);
+			}
+			#btnBack {
+				position: relative;
+				top: 340px;
+				left: 20px;
+				width: 150px;
+				height: 75px;
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="window">
+			<form id="frmJoin">
+				<h1>ニックネームを入力：</h1>
+				<p>
+					<input type="text" name="uname" id="uname">
+					<button type="button" id="btnJoin">参加</button>
+				</p>
+			</form>
+			<img id="btnBack" src="assets/image/btnBack.png">
+		</div>
+	</body>
+	<script>
+		// タイトル画面に戻る
+		document.querySelector("#btnBack").addEventListener("click", ()=>{
+				location.href = "/";
+			});
+	</script>
 </html>
