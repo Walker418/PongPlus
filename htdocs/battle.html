@@ -1,0 +1,132 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf8">
+<title>バトル画面</title>
+<style>
+  #btn-enter{ width:100px; padding:5px; margin-top:10px; }
+  #chararea{
+    border: 5px solid #eeeeee;
+    width: 600px;
+    height: 400px;
+    margin-bottom: 50px;
+    background-color:black;
+  }
+  .char{ position:absolute; top:0px; left:0px; }
+</style>
+</head>
+<body>
+
+
+
+<div id="chararea"></div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+window.onload = () => {
+  const socket = io();
+  const token  = getToken();
+  let mychar = null;
+
+
+
+
+    //----------------------------------
+    // Socket.io イベント処理
+    //----------------------------------
+    // 自分がログイン
+    socket.emit('login', {token:token, char:mychar});
+    socket.on('logged-in', (data)=>{    // data = { "token1":{pos{...}, type:1}, "token2":{pos{...}, type:4}}
+      for (const key in data) {
+        createNewChar(key, data[key].type, data[key].zindex );  // キャラを出現
+        moveChar(key, data[key].pos);                           // 初期位置に移動
+      }
+    });
+    // 他のプレイヤーがログイン
+    socket.on('newPlayer', (data)=>{    // data = {token:data.token, type:data.char, pos:{x:0, y:0}}
+      createNewChar(data.token, data.type, data.zindex);      // キャラを出現
+      moveChar(data.token, data.pos);                         // 初期位置に移動
+    });
+    // 他のプレイヤーがログアウト
+    socket.on('logout', (data)=>{    // data = {token:"xxxxx"}
+      removeChar(data.token);
+    });
+
+    // 押下したキーを送信
+    document.querySelector("body").addEventListener("keypress", (e)=>{
+      let keycd = e.keyCode;
+      socket.emit('movechar', {token:token, key:keycd});
+    });
+    // キャラクターを動かす
+    socket.on('movechar', (data)=>{   // data = {token:"xxxxx", key:115, pos:{x:123,y:456}}
+      moveChar(data.token, data.pos);
+    });
+}
+
+
+/**
+ * キャラクターを新規に登場
+ *
+ * @param {string}  token  プレイヤー識別用のToken
+ * @param {integer} type   キャラクター画像(1〜4)
+ * @param {integer} zindex レイヤー深度
+ * @return {void}
+ */
+function createNewChar(token, type, zindex=999){
+  const chararea = document.querySelector("#chararea");
+  const id   = `char-${token}`;
+  const html = `<img src="/image/Racket.png" class="char" id="${id}">`;
+
+  chararea.insertAdjacentHTML("beforeend", html);
+  document.querySelector(`#${id}`).style.zIndex = zindex;
+}
+
+/**
+ * キャラクターを削除
+ *
+ * @param {string}  token  プレイヤー識別用のToken
+ * @return {void}
+ */
+function removeChar(token){
+  console.log(token);
+  let char = document.querySelector(`#char-${token}`);
+  char.parentNode.removeChild(char);                    //自分自身を削除する
+}
+
+/**
+ * キャラを移動する
+ *
+ * @param {string}  token  プレイヤー識別用のToken
+ * @param {object}  pos    キャラクター座標 {x:1, y:1}
+ * @return {void}
+ */
+function moveChar(token, pos, transition="0.1s"){
+  const element = document.querySelector(`#char-${token}`);
+
+  // アニメーション時間を指定
+  element.style.transition = transition;
+
+  // キャラを移動させる
+  element.style.transform = `translate(${pos.x}px,${pos.y}px)`;
+}
+
+/**
+ * ランダムな文字列を作成
+ *
+ * @param  {integer} len 文字列長
+ * @return {string}
+ */
+ function getToken(len=32){
+  const ls = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  let result = "";
+
+  for(let i=0; i<len; i++){
+    const idx = Math.floor( Math.random() * ls.length );
+    result += ls[idx];
+  }
+
+  return(result);
+}
+</script>
+</body>
+</html>

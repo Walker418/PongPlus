@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>結果画面 | クイズゲーム</title>
+  <style>
+    #myright, #mywrong{
+      display: none;
+    }
+    dt{
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<h1>あたなの結果</h1>
+<div id="myresult">
+  <p>回答: <span id="myanswer"></span></p>
+  <p id="myright">○</p>
+  <p id="mywrong">×</p>
+</div>
+
+<h3>他のプレイヤーの結果</h3>
+<dl id="member">
+</dl>
+
+<p>
+  <a href="/quiz/">タイトル画面へ戻る</a>
+</p>
+
+<script src="js/util.js"></script>
+<script>
+window.onload = ()=>{
+  const uid = localStorage.getItem('uid');
+  const battle_id = localStorage.getItem('battle_id');
+
+  requestAPI(`/quiz/api/result.php?battle_id=${battle_id}`, (json)=>{
+    //------------------------------------
+    // 自分の結果を表示
+    //------------------------------------
+    document.querySelector("#myanswer").innerHTML = json[uid].answer;
+    if(json[uid].correct){
+      document.querySelector("#myright").style.display = "block";
+    }
+    else{
+      document.querySelector("#mywrong").style.display = "block";
+    }
+
+    //------------------------------------
+    // 他プレイヤーの結果を表示
+    //------------------------------------
+    let html = "";
+    for(let key in json){
+      if( key !== uid ){
+        const uname  = json[key].uname;
+        const answer = json[key].answer;
+        const result = json[key].correct?  "○":"×";
+
+        html +=   `<dt>${uname}</dt>`
+                + `<dd>回答：${answer} → ${result}</dd>`;
+      }
+    }
+    document.querySelector("#member").innerHTML = html;
+  });
+}
+</script>
+</body>
+</html>
