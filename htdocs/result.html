@@ -2,8 +2,13 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>結果画面 | クイズゲーム</title>
+  <title>結果画面</title>
   <style>
+    #window {
+    background-image: url(assets/image/result.png);
+    width: 800px;
+    height: 600px;
+    }
     #myright, #mywrong{
       display: none;
     }
@@ -13,8 +18,8 @@
   </style>
 </head>
 <body>
-
-<h1>あたなの結果</h1>
+<div id="window">
+<h1 align="center">RESULT</h1>
 <div id="myresult">
   <p>回答: <span id="myanswer"></span></p>
   <p id="myright">○</p>
@@ -26,9 +31,9 @@
 </dl>
 
 <p>
-  <a href="/quiz/">タイトル画面へ戻る</a>
+  <a href="/">タイトル画面へ戻る</a>
 </p>
-
+</div>
 <script src="js/util.js"></script>
 <script>
 window.onload = ()=>{
