@@ -61,6 +61,14 @@ window.onload = () => {
     socket.on('movechar', (data)=>{   // data = {token:"xxxxx", key:115, pos:{x:123,y:456}}
       moveChar(data.token, data.pos);
     });
+
+    socket.on('addBoll', (data)=>{   // data = {token:"xxxxx", key:115, pos:{x:123,y:456}}
+      createNewBoll(data.token, data.zindex);
+      moveBoll(data.token, data.pos);
+    });
+    socket.on('moveBoll', (data)=>{   // data = {token:"xxxxx", key:115, pos:{x:123,y:456}}
+      moveBoll(data.token,data.pos);
+    });
 }
 
 
@@ -75,7 +83,21 @@ window.onload = () => {
 function createNewChar(token, type, zindex=999){
   const chararea = document.querySelector("#chararea");
   const id   = `char-${token}`;
-  const html = `<img src="/image/Racket.png" class="char" id="${id}">`;
+  const html = `<img src="/assets/image/Racket.png" class="char" id="${id}">`;
+
+  chararea.insertAdjacentHTML("beforeend", html);
+  document.querySelector(`#${id}`).style.zIndex = zindex;
+}
+/**
+ * ボールを新規に登場
+ *
+ * @param {integer} zindex レイヤー深度
+ * @return {void}
+ */
+function createNewBoll(token,zindex=2000){
+  const chararea = document.querySelector("#chararea");
+  const id   = `char-${token}`;
+  const html = `<img src="/assets/image/Boll.png" class="char"id="${id}">`;
 
   chararea.insertAdjacentHTML("beforeend", html);
   document.querySelector(`#${id}`).style.zIndex = zindex;
@@ -101,6 +123,22 @@ function removeChar(token){
  * @return {void}
  */
 function moveChar(token, pos, transition="0.1s"){
+  const element = document.querySelector(`#char-${token}`);
+
+  // アニメーション時間を指定
+  element.style.transition = transition;
+
+  // キャラを移動させる
+  element.style.transform = `translate(${pos.x}px,${pos.y}px)`;
+}
+
+/**
+ * ボールを移動する
+ *
+ * @param {object}  pos    キャラクター座標 {x:1, y:1}
+ * @return {void}
+ */
+function moveBoll(token, pos, transition="0.1s"){
   const element = document.querySelector(`#char-${token}`);
 
   // アニメーション時間を指定
